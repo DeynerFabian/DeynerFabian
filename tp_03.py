@@ -1,11 +1,11 @@
-
 from math import prod
 import time
 from collections import Counter
 
-
 class Sucursal:
-     
+    def __init__(self):
+        self.productos = []
+
     def registrar_producto(self, nuevo_producto):
         self.productos.add(nuevo_producto)
         
@@ -33,8 +33,20 @@ class Sucursal:
                 return precio_final
             else:
                  precio_final = producto.precio+(21*producto.precio)/100
-            return precio_final   
-            
+            return precio_final  
+
+    def actualizar_precio_segun(self,criterio,porcentaje):
+        for producto in self.productos:
+            if criterio.corresponde_a(producto):
+                producto.precio += (producto.precio*porcentaje)/100
+
+    def lista_de_producto_segun(self,criterio): # 2 
+        productos_x = []
+        for producto in self.productos:
+            if criterio.corresponde_a(producto):
+             productos_x.append(producto)
+        return productos_x
+      # return [producto for producto in self.productos if criterio.corresponde_a(producto)]
         
     def contar_categorias(self):
         lista_total_categorias = set()
@@ -100,7 +112,6 @@ class Sucursal:
     
     def hay_ventas(self):
         return len(self.ventas) > 0
-       
    
 class Prenda:
     def __init__(self,un_codigo,un_nombre,un_precio,categoria):
@@ -147,35 +158,30 @@ class Prenda:
     
 
 class PorNombre:
-    def __init__(self, expresion_del_nombre):
-        self.expresion_del_nombre = expresion_del_nombre
-        
-    def corresponde_al_producto(self, producto):
-        return producto.es_de_nombre(self.expresion_del_nombre)
+    def __init__(self,u_nombre):
+        self.nombre = u_nombre         
+    
+    def corresponde_a(self,producto):
+        return producto.nombre == self.nombre
+
+class PorPrecio:
+    def __init__(self,u_precio):
+        self.precio = u_precio
+
+    def corresponde_a(self,producto):
+        return producto.precio < self.precio   
 
 class PorCategoria:
-    def __init__(self, categoria):
-        self.categoria = categoria
+    def __init__(self,u_categoria):
+        self.categoria = u_categoria
+
+    def corresponde_a(self,producto):
+        return producto.categoria == self.categoria
     
-    def corresponde_al_producto(self, producto):
-        return producto.es_de_categoria(self.categoria)
-    
+class PorStock:
 
-
-    def actualizar_precios_por_categoria(self,categoria,porcentaje):
-        self.actualizar_precios_segun(PorCategoria(categoria), porcentaje)
-
-
-    def actualizar_precios_por_nombre(self,nombre,porcentaje):
-        self.actualizar_precios_segun(PorNombre(nombre), porcentaje)
-
-            
-    def actualizar_precios_segun(self, criterio, porcentaje):
-        for producto in self.productos:
-            if criterio.corresponde_al_producto(producto):
-                producto.precio += (producto.precio*porcentaje)/100
-
-    
+    def corresponde_a(self,producto): # 1.3 
+        return producto.stock == 0
     
 class Nueva:
     def precio_final(self,producto):
@@ -204,7 +210,6 @@ class SucursalFisica(Sucursal):
         return self.gasto_por_dia
     
     
-
 class SucursalVirtual(Sucursal):
     def __init__(self):
         self.productos = set()
