@@ -1,5 +1,5 @@
 from posixpath import supports_unicode_filenames
-from tp_03 import *
+from tp import *
 import pytest # ejemplo para que conflictue
 
 # utilidades
