@@ -80,3 +80,26 @@ def test_contar_por_categoria():
     sucursal_retiro.registrar_producto(jean_talle_40)
     sucursal_retiro.recargar_stock(100, 500)
     assert sucursal_retiro.contar_categorias() == 2
+
+def test_se_puede_dar_al_producto_una_categoria_inicial():
+    assert remera_talle_s.categoria == "remera"
+
+def test_se_puede_buscar_remera_por_categoria():
+    reiniciar_listas(sucursal_retiro)
+    
+    sucursal_retiro.registrar_producto(remera_talle_s)
+    sucursal_retiro.registrar_producto(jean_talle_40)
+    
+    assert sucursal_retiro.lista_de_producto_segun(PorCategoria("remera")) == [
+        remera_talle_s
+    ]
+    
+def test_se_puede_buscar_remera_por_precio():
+    reiniciar_listas(sucursal_retiro)
+    
+    sucursal_retiro.registrar_producto(remera_talle_s)
+    sucursal_retiro.registrar_producto(jean_talle_40)
+    
+    assert sucursal_retiro.lista_de_producto_segun(PorPrecio(2000)) == [
+        remera_talle_s
+    ]    
