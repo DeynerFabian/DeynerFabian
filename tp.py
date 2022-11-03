@@ -62,7 +62,7 @@ class Sucursal:
                codigo_valido = True
                if producto.hay_stock_para_venta(cantidad_a_comprar):
                   producto.stock -= cantidad_a_comprar
-                  monto_total = self.calcular_precio_final(codigo_producto,es_extranjero)*cantidad_a_comprar
+                  monto_total = self.calcular_precio_final(producto, es_extranjero)*cantidad_a_comprar
                   self.ventas.append({"producto":producto.nombre,"cantidad_vendida":cantidad_a_comprar,"monto":monto_total,"fecha":time.strftime("%d/%m"),"anio":time.strftime("%Y")})
                else:
                   raise ValueError ("No hay suficiente stock para realizar la venta")      
