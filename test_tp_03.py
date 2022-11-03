@@ -1,6 +1,6 @@
 from posixpath import supports_unicode_filenames
 from tp_03 import *
-import pytest
+import pytest # ejemplo para que conflictue
 
 # utilidades
 sucursal_retiro = SucursalFisica()
