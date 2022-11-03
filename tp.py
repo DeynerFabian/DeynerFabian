@@ -26,14 +26,14 @@ class Sucursal:
     
     
     def calcular_precio_final(self, producto, es_extranjero):
-        precio_final = 0 
-        for producto in self.productos:
-            if es_extranjero and producto.precio > 70:
-                precio_final = producto.precio
-                return precio_final
-            else:
-                 precio_final = producto.precio+(21*producto.precio)/100
-            return precio_final  
+        precio_final = 0
+         
+        if es_extranjero and producto.precio > 70:
+            precio_final = producto.precio
+            return precio_final
+        else:
+            precio_final = producto.precio+(21*producto.precio)/100
+        return precio_final  
 
     def actualizar_precio_segun(self,criterio,porcentaje):
         for producto in self.productos:
