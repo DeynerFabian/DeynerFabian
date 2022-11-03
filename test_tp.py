@@ -103,3 +103,10 @@ def test_se_puede_buscar_remera_por_precio():
     assert sucursal_retiro.lista_de_producto_segun(PorPrecio(2000)) == [
         remera_talle_s
     ]    
+    
+#TODO testear todas las busquedas
+#TODO testear el actualizar_segun
+#TODO corregir los tests rotos de categoria (al terminar todo tiene que estar en verde)
+#TODO hacer el criterio por oposicion
+#TODO hacer el discontinuar productos 
+#TODO hacer la tarea programada de discontinuar productos
