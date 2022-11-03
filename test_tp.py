@@ -1,6 +1,6 @@
 from posixpath import supports_unicode_filenames
 from tp import *
-import pytest # ejemplo para que conflictue
+import pytest
 
 # utilidades
 sucursal_retiro = SucursalFisica()
@@ -40,29 +40,6 @@ def test_calcular_precio_final_extranjero():
     sucursal_retiro.recargar_stock(200, 500)
     assert sucursal_retiro.calcular_precio_final(remera_talle_s, True) == 1500
 
-def test_calcular_precio_final_local():
-    reiniciar_listas(sucursal_retiro)
-    sucursal_retiro.registrar_producto(remera_talle_s)
-    sucursal_retiro.registrar_producto(jean_talle_40)
-    sucursal_retiro.recargar_stock(100, 500)
-    sucursal_retiro.recargar_stock(200, 500)
-    assert sucursal_retiro.calcular_precio_final(jean_talle_40, False) == 3630
-
-def test_contar_por_categorias_varias():
-    reiniciar_listas(sucursal_retiro)
-    sucursal_retiro.registrar_producto(remera_talle_s)
-    sucursal_retiro.registrar_producto(jean_talle_40)
-    sucursal_retiro.recargar_stock(100, 500)
-    sucursal_retiro.recargar_stock(200, 500)
-    assert sucursal_retiro.contar_categorias() == 2
-
-def test_contar_por_categoria():
-    reiniciar_listas(sucursal_retiro)
-    sucursal_retiro.registrar_producto(remera_talle_s)
-    sucursal_retiro.registrar_producto(jean_talle_40)
-    sucursal_retiro.recargar_stock(100, 500)
-    assert sucursal_retiro.contar_categorias() == 2
-
 def test_realizar_compra():
     reiniciar_listas(sucursal_retiro)
     sucursal_retiro.registrar_producto(remera_talle_s)
@@ -103,26 +80,3 @@ def test_contar_por_categoria():
     sucursal_retiro.registrar_producto(jean_talle_40)
     sucursal_retiro.recargar_stock(100, 500)
     assert sucursal_retiro.contar_categorias() == 2
-
-def test_realizar_compra():
-    reiniciar_listas(sucursal_retiro)
-    sucursal_retiro.registrar_producto(remera_talle_s)
-    sucursal_retiro.registrar_producto(jean_talle_40)
-    sucursal_retiro.recargar_stock(100, 500)
-    sucursal_retiro.recargar_stock(200, 500)
-    sucursal_retiro.realizar_compra(100,1, True)
-    assert len(sucursal_retiro.ventas) == 1
-    
-    
-
-
-
-
-
-
-
-
-
-
-    
-
