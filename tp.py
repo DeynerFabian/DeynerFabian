@@ -172,11 +172,12 @@ class PorPrecio:
         return producto.precio < self.precio   
 
 class PorCategoria:
-    def __init__(self,u_categoria):
-        self.categoria = u_categoria
+    def __init__(self, categoria):
+        self.categoria = categoria
 
     def corresponde_a(self,producto):
-        return producto.categoria == self.categoria
+        return  self.categoria in  producto.categoria  
+        
     
 class PorStock:
 
