@@ -27,7 +27,6 @@ class Sucursal:
     
     def calcular_precio_final(self, producto, es_extranjero):
         precio_final = 0
-         
         if es_extranjero and producto.precio > 70:
             precio_final = producto.precio
             return precio_final
@@ -35,16 +34,15 @@ class Sucursal:
             precio_final = producto.precio+(21*producto.precio)/100
         return precio_final  
 
-    def actualizar_precio_segun(self,criterio,porcentaje):
-        for producto in self.productos:
-            if criterio.corresponde_a(producto):
-                producto.precio += (producto.precio*porcentaje)/100
+
+   
+    
 
     def lista_de_producto_segun(self,criterio): # 2 
         productos_x = []
         for producto in self.productos:
             if criterio.corresponde_a(producto):
-             productos_x.append(producto)
+                productos_x.append(producto)
         return productos_x
       # return [producto for producto in self.productos if criterio.corresponde_a(producto)]
         
@@ -100,9 +98,14 @@ class Sucursal:
             productos_vendidos.append(venta["producto"])
         
         mas_vendidos = Counter(productos_vendidos)
-        mas_vendidos = mas_vendidos.most_common(cantidad_de_productos)
-        return mas_vendidos
-    
+        return mas_vendidos.most_common(cantidad_de_productos)
+        
+
+    def actualizar_precios_segun(self, criterio, porcentaje):
+        for producto in self.productos:
+            if criterio.corresponde_a(producto):
+               producto.actualizar_precio_segun_porcentaje(porcentaje)
+        
 
     def ganancia_diaria(self):
         if self.hay_ventas():
@@ -110,8 +113,48 @@ class Sucursal:
         else:
             return self.gastos_del_dia()
     
+
     def hay_ventas(self):
         return len(self.ventas) > 0
+
+
+    def listar_productos_segun(self,criterio):
+        return {producto for producto in self.productos if criterio.corresponde_a(producto)}
+
+
+         # Sucursales --- 
+
+class SucursalFisica(Sucursal):
+    def __init__(self):
+        self.productos = set()
+        self.ventas = []
+        self.gasto_por_dia = 15000
+    
+    def gastos_del_dia(self):
+        return self.gasto_por_dia
+    
+    
+class SucursalVirtual(Sucursal):
+    def __init__(self):
+        self.productos = set()
+        self.ventas = []
+        self.gasto_por_dia = 1000
+        self.gasto_variable = 1
+
+    def gastos_del_dia(self):
+        if len(self.ventas) > 100:
+            return len(self.ventas)*self.gasto_variable
+        else:
+            return self.gasto_por_dia
+
+    def modificar_gasto_variable(self,nuevo_valor):
+        self.gasto_variable = nuevo_valor
+
+class SucursalMarte(Sucursal):
+    pass  
+
+
+                   # Clase Prenda ---
    
 class Prenda:
     def __init__(self,un_codigo,un_nombre,un_precio,categoria):
@@ -128,7 +171,8 @@ class Prenda:
        return self.stock > 0
 
     def hay_stock_para_venta(self,cantidad_a_vender):
-       return self.stock >= cantidad_a_vender    
+       return self.stock >= cantidad_a_vender
+
 
     def codigo_valido(self,codigo):
        return codigo == self.codigo
@@ -147,15 +191,38 @@ class Prenda:
         preci0_final = self.estado.precio_final(precio)
         return preci0_final
 
-    def es_de_categoria(self,una_categoria):
-        for categoria in self.categoria:
-            if categoria.lower() == una_categoria.lower():
-                return True
-        return False     
+    def es_de_categoria(self, categoria):
+        return categoria in self.categoria 
+        
 
     def es_de_nombre(self, un_nombre): 
-        pass
+        return un_nombre == self.nombre 
+
+    def actualizar_precio_segun_porcentaje(self, porcentaje):
+        self.precio = self.precio + (self.precio * porcentaje)/100
     
+ 
+
+                 # Estados de prendas ---
+
+class Nueva:
+    def precio_final(self,precio):
+        return precio
+    
+class Promocion:
+    def __init__(self, valor_descuento):
+        self.valor = valor_descuento
+        
+    def precio_final(self, precio):
+      return precio - self.valor
+    
+class Liquidacion:
+    def precio_final(self, precio):
+        return precio / 2  
+    
+                 
+
+                 # Segun criterios ---
 
 class PorNombre:
     def __init__(self,u_nombre):
@@ -176,56 +243,13 @@ class PorCategoria:
         self.categoria = categoria
 
     def corresponde_a(self,producto):
-        return  self.categoria in  producto.categoria  
-        
+        return producto.es_de_categoria(self.categoria)
+
     
 class PorStock:
 
-    def corresponde_a(self,producto): # 1.3 
+    def corresponde_a(self, producto): # 1.3 
         return producto.stock == 0
-    
-class Nueva:
-    def precio_final(self,producto):
-        return producto.precio
-    
-class Promocion:
-    def __init__(self, valor_fijo):
-        self.valor_fijo = valor_fijo
-        
-    def precio_final(self, precio_base):
-      return precio_base - self.valor_fijo
-    
-class Liquidacion:
-    def precio_final(self, precio_base):
-        return precio_base/ 2  
-    
-       
-
-class SucursalFisica(Sucursal):
-    def __init__(self):
-        self.productos = set()
-        self.ventas = []
-        self.gasto_por_dia = 15000
-    
-    def gastos_del_dia(self):
-        return self.gasto_por_dia
-    
-    
-class SucursalVirtual(Sucursal):
-    def __init__(self):
-        self.productos = set()
-        self.ventas = []
-        self.gasto_por_dia = 15000
-        self.gasto_variable = 1
-
-    def gastos_del_dia(self):
-        if len(self.ventas) > 100:
-            return len(self.ventas)*self.gasto_variable
-        else:
-            return self.gasto_por_dia
-
-    def modificar_gasto_variable(self,nuevo_valor):
-        self.gasto_variable = nuevo_valor
           
-    
+
 
