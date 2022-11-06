@@ -34,18 +34,7 @@ class Sucursal:
             precio_final = producto.precio+(21*producto.precio)/100
         return precio_final  
 
-
    
-    
-
-    def lista_de_producto_segun(self,criterio): # 2 
-        productos_x = []
-        for producto in self.productos:
-            if criterio.corresponde_a(producto):
-                productos_x.append(producto)
-        return productos_x
-      # return [producto for producto in self.productos if criterio.corresponde_a(producto)]
-        
     def contar_categorias(self):
         lista_total_categorias = set()
         for producto in self.productos:
@@ -116,8 +105,6 @@ class Sucursal:
 
     def hay_ventas(self):
         return len(self.ventas) > 0
-<<<<<<< HEAD
-
 
     def listar_productos_segun(self,criterio):
         return {producto for producto in self.productos if criterio.corresponde_a(producto)}
@@ -172,68 +159,12 @@ class Prenda:
        return self.stock > 0
 
     def hay_stock_para_venta(self,cantidad_a_vender):
-       return self.stock >= cantidad_a_vender
-
-=======
-
->>>>>>> a5693dec8de3968b9a1457bc58f050261c5ca7e7
-
-    def listar_productos_segun(self,criterio):
-        return {producto for producto in self.productos if criterio.corresponde_a(producto)}
-
-
-<<<<<<< HEAD
-=======
-         # Sucursales --- 
-
-class SucursalFisica(Sucursal):
-    def __init__(self):
-        self.productos = set()
-        self.ventas = []
-        self.gasto_por_dia = 15000
-    
-    def gastos_del_dia(self):
-        return self.gasto_por_dia
-    
-    
-class SucursalVirtual(Sucursal):
-    def __init__(self):
-        self.productos = set()
-        self.ventas = []
-        self.gasto_por_dia = 15000
-        self.gasto_variable = 1
-
-    def gastos_del_dia(self):
-        if len(self.ventas) > 100:
-            return len(self.ventas)*self.gasto_variable
+        if self.stock >= cantidad_a_vender:
+           self.stock -= cantidad_a_vender
+           return True
         else:
-            return self.gasto_por_dia
-
-    def modificar_gasto_variable(self,nuevo_valor):
-        self.gasto_variable = nuevo_valor
-
-class SucursalMarte(Sucursal):
-    pass  
-
-
-                   # Clase Prenda ---
-   
-class Prenda:
-    def __init__(self,un_codigo,un_nombre,un_precio,categoria):
-        self.codigo = un_codigo
-        self.nombre = un_nombre
-        self.precio = un_precio
-        self.estado = Nueva()
-        self.stock = 0
-        self.categoria = set()
-        self.categoria.add(categoria)
-        
-        
-    def hay_stock(self):
-       return self.stock > 0
-
-    def hay_stock_para_venta(self,cantidad_a_vender):
-       return self.stock >= cantidad_a_vender
+           return False
+       
 
 
     def codigo_valido(self,codigo):
@@ -249,7 +180,6 @@ class Prenda:
     def cambiar_estado(self,nuevo_estado):
         self.estado = nuevo_estado
 
->>>>>>> a5693dec8de3968b9a1457bc58f050261c5ca7e7
     def precio_final(self,precio):
         preci0_final = self.estado.precio_final(precio)
         return preci0_final
