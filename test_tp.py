@@ -177,14 +177,6 @@ def test_productos_que_mas_se_vendieron():
     sucursal_retiro.realizar_compra(200, 20, True)
     sucursal_retiro.realizar_compra(200, 20, True)
     assert len(sucursal_retiro.productos_mas_vendidos(2)) == 2
-"""
-def test_actualizaremos_precios_por_categorias():
-    reiniciar_listas(sucursal_retiro)
-    reiniciar_stock(Prenda)
-    sucursal_retiro.registrar_producto(jean_talle_40)
-    sucursal_retiro.actualizar_precios_por_categoria("jean", 50)
-    assert jean_talle_40.precio == 6000  No ocurre lo esperado 
-"""
 
 
 def test_ventas_del_dia_con_dos_productos_de_diferentes_cetegorias():
@@ -198,7 +190,7 @@ def test_ventas_del_dia_con_dos_productos_de_diferentes_cetegorias():
     sucursal_retiro.realizar_compra(200, 20, False)
     assert sucursal_retiro.valor_ventas_del_dia() == 117600
 
-def test_ventas_del_anio():
+def test_ventas_del_anio(): 
     reiniciar_listas(sucursal_retiro)
     sucursal_retiro.registrar_producto(remera_talle_s)
     sucursal_retiro.registrar_producto(jean_talle_40)
@@ -240,6 +232,7 @@ def test_productos_que_mas_se_vendieron():
 
 def test_de_ganancia_sucursal_con_parametros_de_la_fisica():
     reiniciar_listas(sucursal_retiro)
+    reiniciar_stock(Prenda)
     sucursal_retiro.registrar_producto(remera_talle_s)
     sucursal_retiro.registrar_producto(jean_talle_40)
     sucursal_retiro.registrar_producto(gorra_blanca)
@@ -252,6 +245,7 @@ def test_de_ganancia_sucursal_con_parametros_de_la_fisica():
 
 def test_de_ganancia_sucursal_con_parametros_de_la_virtual():
     reiniciar_listas(sucursal_air)
+    reiniciar_stock(Prenda)
     sucursal_air.registrar_producto(remera_talle_s)
     sucursal_air.registrar_producto(jean_talle_40)
     sucursal_air.registrar_producto(gorra_blanca)
@@ -263,6 +257,12 @@ def test_de_ganancia_sucursal_con_parametros_de_la_virtual():
     sucursal_air.realizar_compra(200, 20, True)
     assert sucursal_air.ganancia_diaria() == 74000
 
+def test_actualizaremos_precios_por_categorias():
+    reiniciar_listas(sucursal_retiro)
+    reiniciar_stock(Prenda)
+    sucursal_retiro.registrar_producto(jean_talle_40)
+    sucursal_retiro.actualizar_precios_segun(PorCategoria("jean"), 50)
+    assert jean_talle_40.precio == 4500  
 
 #TODO testear todas las busquedas
 #TODO testear el actualizar_segun
