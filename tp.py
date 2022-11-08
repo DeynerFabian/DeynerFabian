@@ -24,7 +24,6 @@ class Sucursal:
                 return producto.stock > 0
         return False
     
-    
     def calcular_precio_final(self, producto, es_extranjero):
         precio_final = 0
         if es_extranjero and producto.precio > 70:
@@ -109,7 +108,6 @@ class Sucursal:
     def listar_productos_segun(self,criterio):
         return {producto for producto in self.productos if criterio.corresponde_a(producto)}
 
-
          # Sucursales --- 
 
 class SucursalFisica(Sucursal):
@@ -141,7 +139,6 @@ class SucursalVirtual(Sucursal):
 class SucursalMarte(Sucursal):
     pass  
 
-
                    # Clase Prenda ---
    
 class Prenda:
@@ -165,7 +162,6 @@ class Prenda:
         else:
            return False
        
-
 
     def codigo_valido(self,codigo):
        return codigo == self.codigo
@@ -211,9 +207,7 @@ class Promocion:
     
 class Liquidacion:
     def precio_final(self, precio):
-        return precio / 2  
-    
-                 
+        return precio / 2               
 
                  # Segun criterios ---
 
@@ -238,11 +232,24 @@ class PorCategoria:
     def corresponde_a(self,producto):
         return producto.es_de_categoria(self.categoria)
 
-    
 class PorStock:
 
+<<<<<<< HEAD
     def corresponde_a(self, producto):
         return producto.stock == 0
+=======
+    def corresponde_a(self, producto): 
+        return producto.stock > 0
+
+class PorOposicion:
+    def __init__(self,criterio):
+        self.criterio = criterio
+
+    def corresponde_a(self, producto):
+        return not self.criterio.corresponde_a(producto)
+
+
+>>>>>>> 5fc2ca2098a53cfc46510a791d68efbb4b0c077e
           
 
 
