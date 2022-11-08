@@ -24,7 +24,6 @@ class Sucursal:
                 return producto.stock > 0
         return False
     
-    
     def calcular_precio_final(self, producto, es_extranjero):
         precio_final = 0
         if es_extranjero and producto.precio > 70:

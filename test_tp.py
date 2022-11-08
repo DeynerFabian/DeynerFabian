@@ -377,4 +377,4 @@ def test_actualizaremos_precio_utilizando_nuestro_criterio_por_oposicion_por_pre
     assert jean_talle_40.precio == 4500
 
 
-#TODO hacer la tarea programada de discontinuar productos
+#TODO hacer la tarea programada de discontinuar productos.
