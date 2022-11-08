@@ -6,12 +6,14 @@ import pytest
 sucursal_retiro = SucursalFisica()
 remera_talle_s = Prenda(100,"remera talle s",1500,"remera")
 jean_talle_40 = Prenda(200, "jean_talle_40", 3000, "jean")
+zapatos_negros = Prenda(400, "zapatos_negros", 5000, "zapatos")
 gorra_blanca = Prenda(300, "gorra_blanca", 4500, "gorra")
 
 sucursal_air = SucursalVirtual()
 remera_talle_s = Prenda(100,"remera talle s",1500,"remera")
 jean_talle_40 = Prenda(200, "jean_talle_40", 3000, "jean")
 gorra_blanca = Prenda(300, "gorra_blanca", 4500, "gorra")
+zapatos_negros = Prenda(400, "zapatos_negros", 5000, "zapatos")
 
 def reiniciar_listas(sucursal):
     sucursal.productos.clear()
@@ -24,7 +26,20 @@ def reinicio_el_precio_de_las_prendas():
     remera_talle_s.precio = 1500
     jean_talle_40.precio = 3000
     gorra_blanca.precio = 4500
+    zapatos_negros.precio = 5000
 
+def productos_previamente_recargados():
+    reiniciar_listas(sucursal_retiro)
+    reiniciar_stock(Prenda)
+    reinicio_el_precio_de_las_prendas()
+    sucursal_retiro.registrar_producto(zapatos_negros)
+    sucursal_retiro.registrar_producto(gorra_blanca)
+    sucursal_retiro.registrar_producto(remera_talle_s)
+    sucursal_retiro.registrar_producto(jean_talle_40)
+    sucursal_retiro.recargar_stock(400, 100)
+    sucursal_retiro.recargar_stock(100, 200)
+    sucursal_retiro.recargar_stock(300, 600)
+    sucursal_retiro.recargar_stock(200, 300)
 
 
 def test_registrar_un_producto():
@@ -270,6 +285,14 @@ def test_actualizaremos_precios_por_categorias():
     sucursal_retiro.actualizar_precios_segun(PorCategoria("jean"), 50)
     assert jean_talle_40.precio == 4500
 
+def test_actualizaremos_precios_por_categorias_que_corresponda():
+    productos_previamente_recargados()
+    sucursal_retiro.actualizar_precios_segun(PorCategoria("zapatos"), 100)
+    assert zapatos_negros.precio == 10000
+    assert remera_talle_s.precio == 1500
+    assert jean_talle_40.precio == 3000
+    
+
 def test_actualizaremos_precio_segun_stock():
     reiniciar_listas(sucursal_retiro)
     reiniciar_stock(Prenda)
@@ -292,7 +315,7 @@ def test_actualizaremos_precios_segun_su_nombre():
     sucursal_retiro.actualizar_precios_segun(PorNombre("gorra_blanca"),50)
     assert gorra_blanca.precio == 6750
 
-def test_actualizaremos_precios_segun_su_nombre():
+def test_actualizaremos_precios_segun_su_precio():
     reiniciar_listas(sucursal_retiro)
     reiniciar_stock(Prenda)
     reinicio_el_precio_de_las_prendas()
@@ -300,17 +323,20 @@ def test_actualizaremos_precios_segun_su_nombre():
     sucursal_retiro.registrar_producto(remera_talle_s)
     sucursal_retiro.recargar_stock(100, 200)
     sucursal_retiro.recargar_stock(300, 600)
-    sucursal_retiro.actualizar_precios_segun(PorPrecio(5000), 200)
+    sucursal_retiro.actualizar_precios_segun(PorPrecio(4800), 200)
     assert remera_talle_s.precio == 4500
     assert gorra_blanca.precio == 13500
 
 
+def test_actualizaremos_precio_solo_a_los_que_cumplan_con_nuestro_criterio():
+    productos_previamente_recargados()
+    sucursal_retiro.actualizar_precios_segun(PorPrecio(2000), 100)
+    assert remera_talle_s.precio == 3000
+    assert jean_talle_40.precio == 3000
+    assert zapatos_negros.precio == 5000
+    assert gorra_blanca.precio == 4500
 
-#TODO testear todas las busquedas
-#TODO testear el actualizar_segun
-#TODO corregir los tests rotos de categoria (al terminar todo tiene que estar en verde)
+
 #TODO hacer el criterio por oposicion
 #TODO hacer el discontinuar productos 
 #TODO hacer la tarea programada de discontinuar productos
-
-# PROBANDO MI GIT
