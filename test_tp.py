@@ -291,7 +291,7 @@ def test_actualizaremos_precios_por_categorias_que_corresponda():
     assert zapatos_negros.precio == 10000
     assert remera_talle_s.precio == 1500
     assert jean_talle_40.precio == 3000
-    
+
 
 def test_actualizaremos_precio_segun_stock():
     reiniciar_listas(sucursal_retiro)
@@ -336,7 +336,22 @@ def test_actualizaremos_precio_solo_a_los_que_cumplan_con_nuestro_criterio():
     assert zapatos_negros.precio == 5000
     assert gorra_blanca.precio == 4500
 
+def test_actualizaremos_precio_utilizando_nuestro_criterio_por_oposicion_nombre():
+    reiniciar_listas(sucursal_retiro)
+    reiniciar_stock(Prenda)
+    reinicio_el_precio_de_las_prendas()
+    sucursal_retiro.registrar_producto(gorra_blanca)
+    sucursal_retiro.registrar_producto(remera_talle_s)
+    sucursal_retiro.recargar_stock(100, 200)
+    sucursal_retiro.recargar_stock(300, 600)
+    sucursal_retiro.actualizar_precios_segun(PorOposicion(PorNombre("gorra_blanca")), 200)
+    assert gorra_blanca.precio == 4500
+    assert remera_talle_s.precio == 4500
 
-#TODO hacer el criterio por oposicion
+
+
+
+
+
 #TODO hacer el discontinuar productos 
 #TODO hacer la tarea programada de discontinuar productos

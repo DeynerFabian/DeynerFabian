@@ -237,6 +237,15 @@ class PorStock:
 
     def corresponde_a(self, producto): 
         return producto.stock > 0
+
+class PorOposicion:
+    def __init__(self,criterio):
+        self.criterio = criterio
+
+    def corresponde_a(self, producto):
+        return not self.criterio.corresponde_a(producto)
+
+
           
 
 
