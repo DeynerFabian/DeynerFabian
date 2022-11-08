@@ -242,5 +242,15 @@ class PorOposicion:
 
     def corresponde_a(self, producto):
         return not self.criterio.corresponde_a(producto)
+ 
 
-
+class PorCodigo:
+    def __init__(self, u_codigo):
+        self.codigo = u_codigo
+        
+    def corresponde_a(self,producto):
+        return producto.codigo == self.codigo
+        
+    
+        
+    
