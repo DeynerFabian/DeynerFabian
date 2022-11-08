@@ -233,12 +233,7 @@ class PorCategoria:
         return producto.es_de_categoria(self.categoria)
 
 class PorStock:
-
-<<<<<<< HEAD
     def corresponde_a(self, producto):
-        return producto.stock == 0
-=======
-    def corresponde_a(self, producto): 
         return producto.stock > 0
 
 class PorOposicion:
@@ -247,9 +242,5 @@ class PorOposicion:
 
     def corresponde_a(self, producto):
         return not self.criterio.corresponde_a(producto)
-
-
->>>>>>> 5fc2ca2098a53cfc46510a791d68efbb4b0c077e
-          
 
 
