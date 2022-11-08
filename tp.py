@@ -241,7 +241,7 @@ class PorCategoria:
     
 class PorStock:
 
-    def corresponde_a(self, producto): # 1.3 
+    def corresponde_a(self, producto):
         return producto.stock == 0
           
 
