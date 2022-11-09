@@ -62,6 +62,7 @@ def test_calcular_precio_final_con_vendedor_local():
     sucursal_retiro.recargar_stock(100, 500)
     assert sucursal_retiro.calcular_precio_final(jean_talle_40, False) == 3630
 
+
 def test_realizar_compra():
     reiniciar_listas(sucursal_retiro)
     sucursal_retiro.registrar_producto(remera_talle_s)
@@ -69,8 +70,8 @@ def test_realizar_compra():
     sucursal_retiro.realizar_compra(100,1, True)
     assert len(sucursal_retiro.ventas) == 1
 
-def test_validara_varias_compras():
-    productos_previamente_recargados()
+def test_validara_cantidad_de_compras():
+    productos_previamente_recargados_retiro()
     sucursal_retiro.realizar_compra(100, 27, True)
     sucursal_retiro.realizar_compra(200, 42, True)
     sucursal_retiro.realizar_compra(400, 21, True)
@@ -195,7 +196,7 @@ def test_actualizaremos_precios_por_categorias():
     assert jean_talle_40.precio == 4500
 
 def test_actualizaremos_precios_por_categorias_solo_a_la_que_corresponda():
-    productos_previamente_recargados()
+    productos_previamente_recargados_retiro()
     sucursal_retiro.actualizar_precios_segun(PorCategoria("zapatos"), 100)
     assert zapatos_negros.precio == 10000
     assert remera_talle_s.precio == 1500
@@ -235,7 +236,7 @@ def test_actualizaremos_precios_segun_su_precio():
 
 
 def test_actualizaremos_precio_solo_a_los_que_cumplan_con_nuestro_criterio_por_precio():
-    productos_previamente_recargados()
+    productos_previamente_recargados_retiro()
     sucursal_retiro.actualizar_precios_segun(PorPrecio(2000), 100)
     assert remera_talle_s.precio == 3000
     assert jean_talle_40.precio == 3000
@@ -252,12 +253,12 @@ def test_actualizaremos_precio_utilizando_nuestro_criterio_por_oposicion_nombre(
     assert remera_talle_s.precio == 4500
     
 def test_utilizaremos_el_criterio_por_oposicion_categoria_para_actualizar_precio():
-    productos_previamente_recargados()
+    productos_previamente_recargados_retiro()
     sucursal_retiro.actualizar_precios_segun(PorOposicion(PorCategoria("jean")), 100)
     assert zapatos_negros.precio == 10000
 
 def test_actualizaremos_precio_utilizando_nuestro_criterio_por_oposicion_categoria():
-    productos_previamente_recargados()
+    productos_previamente_recargados_retiro()
     sucursal_retiro.actualizar_precios_segun(PorOposicion(PorCategoria("zapatos")), 100)
     assert zapatos_negros.precio == 5000
 
@@ -285,7 +286,7 @@ def test_no_actualizaremos_precio_porque_no_aplicamos_nuestro_criterio_por_oposi
     assert remera_talle_s.precio == 1500
    
 def test_demostraremos_que_no_se_actualza_nada_que_no_cumpla_con_nuestro_criterio_por_oposicion_por_precio():
-    productos_previamente_recargados()
+    productos_previamente_recargados_retiro()
     sucursal_retiro.actualizar_precios_segun(PorOposicion(PorPrecio(10000)), 50)
     assert zapatos_negros.precio == 5000
     assert gorra_blanca.precio == 4500
@@ -293,7 +294,7 @@ def test_demostraremos_que_no_se_actualza_nada_que_no_cumpla_con_nuestro_criteri
     assert jean_talle_40.precio == 3000
 
 def test_actualizaremos_todos_los_precios_basado_en_nuestro_criterio_por_oposicion_por_precio():
-    productos_previamente_recargados()
+    productos_previamente_recargados_retiro()
     sucursal_retiro.actualizar_precios_segun(PorOposicion(PorPrecio(100)), 50)
     assert zapatos_negros.precio == 7500
     assert gorra_blanca.precio == 6750
@@ -302,7 +303,7 @@ def test_actualizaremos_todos_los_precios_basado_en_nuestro_criterio_por_oposici
 
 
 
-# TODO hacer la tarea programada de discontinuar productos.
+# TODO hacer la tarea programada de discontinuar productos.  
 
 
 ######################################## Mini base de datos ###########################################
@@ -332,7 +333,7 @@ def reinicio_el_precio_de_las_prendas():
     gorra_blanca.precio = 4500
     zapatos_negros.precio = 5000
 
-def productos_previamente_recargados():
+def productos_previamente_recargados_retiro():
     reiniciar_listas(sucursal_retiro)
     reiniciar_stock(Prenda)
     reinicio_el_precio_de_las_prendas()
@@ -344,3 +345,16 @@ def productos_previamente_recargados():
     sucursal_retiro.recargar_stock(100, 200)
     sucursal_retiro.recargar_stock(300, 600)
     sucursal_retiro.recargar_stock(200, 300)
+
+def productos_previamente_recargados_air():
+    reiniciar_listas(sucursal_air)
+    reiniciar_stock(Prenda)
+    reinicio_el_precio_de_las_prendas()
+    sucursal_air.registrar_producto(zapatos_negros)
+    sucursal_air.registrar_producto(gorra_blanca)
+    sucursal_air.registrar_producto(remera_talle_s)
+    sucursal_air.registrar_producto(jean_talle_40)
+    sucursal_air.recargar_stock(400, 100)
+    sucursal_air.recargar_stock(100, 200)
+    sucursal_air.recargar_stock(300, 600)
+    sucursal_air.recargar_stock(200, 300)

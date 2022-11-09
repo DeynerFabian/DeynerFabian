@@ -100,10 +100,10 @@ class Sucursal:
            return self.valor_ventas_del_dia() - self.gastos_del_dia()
         else:
             return self.gastos_del_dia()
-    
 
     def hay_ventas(self):
         return len(self.ventas) > 0
+
 
     def listar_productos_segun(self,criterio):
         return {producto for producto in self.productos if criterio.corresponde_a(producto)}
@@ -135,6 +135,8 @@ class SucursalVirtual(Sucursal):
 
     def modificar_gasto_variable(self,nuevo_valor):
         self.gasto_variable = nuevo_valor
+
+
 
 class SucursalMarte(Sucursal):
     pass  
