@@ -117,8 +117,16 @@ class Sucursal:
             writer = csv.writer(file,delimiter=",")
             writer.writerows(self.registros)
             
-    def cantidad_de_ventas(self):
-        
+    def cantidad_de_ventas_diarias(self):
+        x = 0
+        for vendidos in self.ventas:
+            if vendidos["fecha"] == date.strftime(date.today(),"%Y-%m-%d"):
+                venta_temporal = vendidos["cantidad_vendida"]
+                x += venta_temporal
+        return x 
+                
+                                                  
+        pass
 
          # Sucursales --- 
 
@@ -126,7 +134,7 @@ class SucursalFisica(Sucursal):
     def __init__(self):
         self.productos = set()
         self.ventas = []
-        self.registros = []
+        self.registros = [] 
         self.gasto_por_dia = 15000
     
     def gastos_del_dia(self):
