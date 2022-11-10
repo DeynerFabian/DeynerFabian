@@ -1,4 +1,6 @@
 from tp import *
+from segun_criterios import *
+from clase_prenda import *
 import pytest
 
 

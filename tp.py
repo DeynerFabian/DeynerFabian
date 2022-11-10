@@ -57,7 +57,6 @@ class Sucursal:
                   raise ValueError ("No hay suficiente stock para realizar la venta")      
         if not codigo_valido:
            raise ValueError ("El codigo no corresponde a un producto registrado")
-              
 
     def descontinuar_productos(self):
         self.productos = {producto for producto in self.productos if producto.stock > 0}
@@ -110,25 +109,16 @@ class Sucursal:
 
     def listar_productos_segun(self,criterio):
         return {producto for producto in self.productos if criterio.corresponde_a(producto)}
-    
-    def cuentas_diarias(self):
-        self.registros.append([date.strftime(date.today(),"%Y-%m-%d"), self.valor_ventas_del_dia()])
-        with open("reporte.csv", "w", newline="")as file:
-            writer = csv.writer(file,delimiter=",")
-            writer.writerows(self.registros)
             
     def cantidad_de_ventas_diarias(self):
         x = 0
         for vendidos in self.ventas:
-            if vendidos["fecha"] == date.strftime(date.today(),"%Y-%m-%d"):
+            if vendidos["fecha"] == time.strftime("%d/%m"):
                 venta_temporal = vendidos["cantidad_vendida"]
                 x += venta_temporal
         return x 
-                
-                                                  
-        pass
-
-         # Sucursales --- 
+                                                   
+         # ----------------------------------Sucursales ---------------------------------------
 
 class SucursalFisica(Sucursal):
     def __init__(self):
@@ -139,15 +129,26 @@ class SucursalFisica(Sucursal):
     
     def gastos_del_dia(self):
         return self.gasto_por_dia
-    
-    
+    def cuentas_diarias(self):
+        self.registros.append([date.strftime(date.today(),"%Y-%m-%d"), self.cantidad_de_ventas_diarias() ,self.valor_ventas_del_dia()])
+        with open("reporte_fis.csv", "w", newline="")as file:
+            writer = csv.writer(file,delimiter=",")
+            writer.writerows(self.registros)
+            
 class SucursalVirtual(Sucursal):
     def __init__(self):
         self.productos = set()
         self.gasto_por_dia = 1000
         self.gasto_variable = 1
         self.ventas = []
-
+        self.registros = []
+        
+    def cuentas_diarias(self):
+        self.registros.append([date.strftime(date.today(),"%Y-%m-%d"), self.cantidad_de_ventas_diarias() ,self.valor_ventas_del_dia()])
+        with open("reporte_vir.csv", "w", newline="")as file:
+            writer = csv.writer(file,delimiter=",")
+            writer.writerows(self.registros)
+            
     def gastos_del_dia(self):
         if len(self.ventas) > 100:
             return len(self.ventas)*self.gasto_variable
@@ -167,130 +168,3 @@ class SucursalVirtual(Sucursal):
             return precio_final_mas_envio
 
 
-
-class SucursalMarte(Sucursal):
-    pass  
-
-                   # Clase Prenda ---
-   
-class Prenda:
-    def __init__(self,un_codigo,un_nombre,un_precio,categoria):
-        self.codigo = un_codigo
-        self.nombre = un_nombre
-        self.precio = un_precio
-        self.estado = Nueva()
-        self.stock = 0
-        self.categoria = set()
-        self.categoria.add(categoria)
-        
-        
-    def hay_stock(self):
-       return self.stock > 0
-
-    def hay_stock_para_venta(self,cantidad_a_vender):
-        if self.stock >= cantidad_a_vender:
-            return True
-        else:
-            return False
-        
-       
-
-    def codigo_valido(self,codigo):
-       return codigo == self.codigo
-
-    def ver_categorias(self):
-        categorias = ",".join(self.categoria)
-        return categorias
-           
-    def agregar_categoria(self,nueva_categoria):
-       self.categoria.add(nueva_categoria)
-    
-    def cambiar_estado(self,nuevo_estado):
-        self.estado = nuevo_estado
-
-    def precio_final(self,precio):
-        preci0_final = self.estado.precio_final(precio)
-        return preci0_final
-
-    def es_de_categoria(self, categoria):
-        return categoria in self.categoria 
-        
-
-    def es_de_nombre(self, un_nombre): 
-        return un_nombre == self.nombre 
-
-    def actualizar_precio_segun_porcentaje(self, porcentaje):
-        self.precio = self.precio + (self.precio * porcentaje)/100
-    
- 
-
-                 # Estados de prendas ---
-
-class Nueva:
-    def precio_final(self,precio):
-        return precio
-    
-class Promocion:
-    def __init__(self, valor_descuento):
-        self.valor = valor_descuento
-        
-    def precio_final(self, precio):
-      return precio - self.valor
-    
-class Liquidacion:
-    def precio_final(self, precio):
-        return precio / 2               
-
-                 # Segun criterios ---
-
-class PorNombre:
-    def __init__(self,u_nombre):
-        self.nombre = u_nombre         
-    
-    def corresponde_a(self,producto):
-        return producto.nombre == self.nombre
-
-class PorPrecio:
-    def __init__(self,u_precio):
-        self.precio = u_precio
-
-    def corresponde_a(self,producto):
-        return producto.precio < self.precio   
-
-class PorCategoria:
-    def __init__(self, categoria):
-        self.categoria = categoria
-
-    def corresponde_a(self,producto):
-        return producto.es_de_categoria(self.categoria)
-
-class PorStock:
-    def corresponde_a(self, producto):
-        return producto.stock > 0
-
-class PorOposicion:
-    def __init__(self,criterio):
-        self.criterio = criterio
-
-    def corresponde_a(self, producto):
-        return not self.criterio.corresponde_a(producto)
- 
-
-class PorCodigo:
-    def __init__(self, u_codigo):
-        self.codigo = u_codigo
-        
-    def corresponde_a(self,producto):
-        return producto.codigo == self.codigo
-
-
-sucursal_retiro = SucursalFisica()
-remera_talle_s = Prenda(100,"remera talle s",1500,"remera")
-jean_talle_40 = Prenda(200, "jean_talle_40", 3000, "jean")
-zapatos_negros = Prenda(400, "zapatos_negros", 5000, "zapatos")
-gorra_blanca = Prenda(300, "gorra_blanca", 4500, "gorra")    
-
-        
-    
-        
-    
