@@ -1,10 +1,13 @@
 from math import prod
 import time
+from datetime import date 
 from collections import Counter
+import csv 
 
 class Sucursal:
     def __init__(self):
         self.productos = []
+        self.registros = []
 
     def registrar_producto(self, nuevo_producto):
         self.productos.add(nuevo_producto)
@@ -107,6 +110,15 @@ class Sucursal:
 
     def listar_productos_segun(self,criterio):
         return {producto for producto in self.productos if criterio.corresponde_a(producto)}
+    
+    def cuentas_diarias(self):
+        self.registros.append([date.strftime(date.today(),"%Y-%m-%d"), self.valor_ventas_del_dia()])
+        with open("reporte.csv", "w", newline="")as file:
+            writer = csv.writer(file,delimiter=",")
+            writer.writerows(self.registros)
+            
+    def cantidad_de_ventas(self):
+        
 
          # Sucursales --- 
 
@@ -114,6 +126,7 @@ class SucursalFisica(Sucursal):
     def __init__(self):
         self.productos = set()
         self.ventas = []
+        self.registros = []
         self.gasto_por_dia = 15000
     
     def gastos_del_dia(self):
@@ -123,9 +136,9 @@ class SucursalFisica(Sucursal):
 class SucursalVirtual(Sucursal):
     def __init__(self):
         self.productos = set()
-        self.ventas = []
         self.gasto_por_dia = 1000
         self.gasto_variable = 1
+        self.ventas = []
 
     def gastos_del_dia(self):
         if len(self.ventas) > 100:
@@ -261,6 +274,14 @@ class PorCodigo:
         
     def corresponde_a(self,producto):
         return producto.codigo == self.codigo
+
+
+sucursal_retiro = SucursalFisica()
+remera_talle_s = Prenda(100,"remera talle s",1500,"remera")
+jean_talle_40 = Prenda(200, "jean_talle_40", 3000, "jean")
+zapatos_negros = Prenda(400, "zapatos_negros", 5000, "zapatos")
+gorra_blanca = Prenda(300, "gorra_blanca", 4500, "gorra")    
+
         
     
         
