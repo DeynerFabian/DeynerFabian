@@ -136,6 +136,15 @@ class SucursalVirtual(Sucursal):
     def modificar_gasto_variable(self,nuevo_valor):
         self.gasto_variable = nuevo_valor
 
+    def calcular_precio_final_mas_envio(self, producto):
+        precio_final_mas_envio = 0
+        if producto.precio > 3000:
+            precio_final_mas_envio = producto.precio
+            return precio_final_mas_envio
+        else:
+            precio_final_mas_envio = producto.precio + (10*producto.precio)/100
+            return precio_final_mas_envio
+
 
 
 class SucursalMarte(Sucursal):
@@ -159,10 +168,10 @@ class Prenda:
 
     def hay_stock_para_venta(self,cantidad_a_vender):
         if self.stock >= cantidad_a_vender:
-           self.stock -= cantidad_a_vender
-           return True
+            return True
         else:
-           return False
+            return False
+        
        
 
     def codigo_valido(self,codigo):

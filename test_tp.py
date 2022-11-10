@@ -62,6 +62,15 @@ def test_calcular_precio_final_con_vendedor_local():
     sucursal_retiro.recargar_stock(100, 500)
     assert sucursal_retiro.calcular_precio_final(jean_talle_40, False) == 3630
 
+def test_calcularemos_precio_final_de_un_producto_para_saber_si_se_cobra_el_envio():
+    productos_previamente_recargados_air()
+    sucursal_air.realizar_compra(100, 1, True)
+    assert sucursal_air.calcular_precio_final_mas_envio(remera_talle_s) == 1650
+
+def test_se_bonifica_el_envio_a_nuestro_producto_ya_que_supera_el_monto_minimo():
+    productos_previamente_recargados_air()
+    sucursal_air.realizar_compra(300, 1, True)
+    assert sucursal_air.calcular_precio_final_mas_envio(gorra_blanca) == 4500
 
 def test_realizar_compra():
     reiniciar_listas(sucursal_retiro)
