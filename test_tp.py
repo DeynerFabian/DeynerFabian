@@ -1,6 +1,7 @@
 from tp import *
 from segun_criterios import *
 from clase_prenda import *
+from sucursales import *
 import pytest 
 
 
